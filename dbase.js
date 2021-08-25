@@ -13,7 +13,7 @@ mongoose
 /**
  * 连接断开
  */
-mongoose.connection.on("disconnected", function () {
+mongoose.connection.on("disconnected", () => {
 	console.log("Mongoose connection disconnected");
 });
 
