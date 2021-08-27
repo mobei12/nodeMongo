@@ -4,6 +4,9 @@ const app: express.Application = express();
 const bodyParser = require("body-parser");
 import dbTool from "./dbTool";
 app.use(bodyParser.json()); //解析json类型的请求体
+app.get("/", (req, res) => {
+	console.log(req.query);
+});
 app.get("/user/login", (req, res) => {
 	const loginParams = {
 		username: String(req.query.username),
