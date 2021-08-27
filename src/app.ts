@@ -2,37 +2,38 @@
 import express = require("express");
 const app: express.Application = express();
 const bodyParser = require("body-parser");
-const listModel = require("../listModel.js");
-import { saveFunction } from "../insert";
-require("../dbase.js");
+import dbTool from "./dbTool";
 app.use(bodyParser.json()); //解析json类型的请求体
 app.get("/user/login", (req, res) => {
-	listModel.find(req.query).then((doc: Array<any>) => {
-		let resObj = { desc: "用户不存在!" };
-		if (doc.length > 0) {
-			resObj.desc = "登陆成功";
-		}
-		res.send(doc);
+	const loginParams = {
+		username: String(req.query.username),
+		password: String(req.query.password)
+	};
+	dbTool.userLogin(loginParams).then((result: object) => {
+		res.send(result);
 	});
 });
-app.get("/user/resgister", (req, res) => {
+
+app.get("/user/register", (req, res) => {
 	let resObj = { desc: "注册成功" };
-	listModel.find(req.query).then((doc: Array<string>) => {
-		if (doc.length <= 0) {
-			const addObject = {
-				schema: "students",
-				keyObj: {
-					username: String,
-					password: String
-				},
-				data: req.query
-			};
-			saveFunction(addObject);
-		} else {
-			resObj.desc = "用户名已存在";
-		}
-		res.send(Object.assign(resObj, doc));
-	});
+	const registerParams = {
+		username: String(req.query.username),
+		password: String(req.query.password)
+	};
+	dbTool
+		.userLogin({
+			username: String(req.query.username)
+		})
+		.then((result: Array<string>) => {
+			if (result.length > 0) {
+				resObj.desc = "用户名已存在";
+				res.send(resObj);
+			} else {
+				dbTool.userSave(registerParams).then((result: object) => {
+					res.send(result);
+				});
+			}
+		});
 });
 app.listen(process.env.PORT || 8000, function () {
 	console.log("Listen port:8000...");

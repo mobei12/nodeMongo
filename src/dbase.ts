@@ -1,13 +1,12 @@
-let mongoose = require("mongoose");
+import mongoose = require("mongoose");
 
-const db_url =
-	"mongodb://106.53.115.30:27017/?authSource=admin";
+const db_url = "mongodb://106.53.115.30:27017/?authSource=admin";
 mongoose
 	.connect(db_url, {
 		user: "root",
 		pass: "123456"
 	})
-	.then((rec) => console.log("数据库连接成功"))
+	.then(rec => console.log("数据库连接成功"))
 	.catch(() => console.log("数据库连接失败"));
 
 /**
