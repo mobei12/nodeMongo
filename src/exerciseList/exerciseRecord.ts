@@ -23,7 +23,6 @@ router.get("/find", (req, res) => {
 });
 /*存储运动记录*/
 router.get("/saveRecord", (req, res) => {
-    console.log(req.query)
     const saveDate: Date = new Date();
     const saveModel = new exerciseRecordModel(
         Object.assign(req.query, {ctime: saveDate})
