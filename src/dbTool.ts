@@ -27,3 +27,4 @@ export default class dbTools {
 			});
 	}
 }
+/*一个可以ts导出方法的模版，暂时没用，留着看看*/
