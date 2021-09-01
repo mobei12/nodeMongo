@@ -10,8 +10,8 @@ router.use((req, res, next) => {
     next();
 });
 /*根据用户id，查询运动信息*/
-router.get("/find", (req, res) => {
-    let data = {... req.query}
+router.post("/find", (req, res) => {
+    let data = {... req.body}
     exerciseRecordModel
         .find(data)
         .then((result: Array<object>) => {

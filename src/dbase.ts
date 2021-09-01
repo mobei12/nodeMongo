@@ -6,8 +6,8 @@ mongoose
 		user: "root",
 		pass: "123456"
 	})
-	.then(rec => console.log(rec,"数据库连接成功"))
-	.catch(() => console.log("数据库连接失败"));
+	.then(() => console.log("数据库连接成功"))
+	.catch((err) => console.log("数据库连接失败",err));
 
 /**
  * 连接断开

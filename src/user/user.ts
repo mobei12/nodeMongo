@@ -1,19 +1,43 @@
 "use strict";
 import ex = require("express");
-const userModel = require("./userModel");
-import utils from "../utils";
+
 let router = ex.Router();
+
+const userModel = require("./userModel");
+import utils from "../tools/utils";
+
+interface userModelInstance {
+    username: string;
+    _id: string;
+    password?: string;
+}
+
 router.use((req, res, next) => {
     console.log("请求的时间", Date.now());
     next();
 });
-router.get("/login", (req, res) => {
-    let loginData = req.query
-    loginData.password  = utils.genPassword(String(loginData.password))
+router.post("/login", (req, res) => {
+    let loginData = req.body
+    loginData.password = utils.genPassword(String(loginData.password))
     userModel
-        .find(req.query)
-        .then((result: Array<object>) => {
-            res.send(result);
+        .find(loginData)
+        .then((result: Array<userModelInstance>) => {
+            if (result.length > 0) {
+                let userOBJ: userModelInstance = Object.create(result[0]);
+                utils.setToken(userOBJ.username, userOBJ._id).then(token => {
+                    res.send({
+                        code: 200,
+                        user: {username: userOBJ.username, _id: userOBJ._id},
+                        message: '登录成功',
+                        token: token
+                    })
+                })
+            }else {
+                res.send({
+                    code: 200,
+                    message: '登录失败，瓜怂',
+                })
+            }
         })
         .catch((err: object) => {
             console.error(err);
@@ -22,7 +46,7 @@ router.get("/login", (req, res) => {
 router.get("/register", (req, res) => {
     let resObj = {desc: "注册成功"};
     userModel
-        .find({username:req.query.username})
+        .find({username: req.query.username})
         .then((result: Array<object>) => {
             if (result.length > 0) {
                 resObj.desc = "用户名已存在";
@@ -30,7 +54,7 @@ router.get("/register", (req, res) => {
             } else {
                 const saveDate: Date = new Date();
                 let registerData = req.query
-                registerData.password  = utils.genPassword(String(registerData.password))
+                registerData.password = utils.genPassword(String(registerData.password))
                 const saveModel = new userModel(
                     Object.assign(registerData, {ctime: saveDate})
                 );
