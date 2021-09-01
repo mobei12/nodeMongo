@@ -1,12 +1,15 @@
 "use strict";
 import ex = require("express");
 const userModel = require("./userModel");
+import utils from "../utils";
 let router = ex.Router();
 router.use((req, res, next) => {
     console.log("请求的时间", Date.now());
     next();
 });
 router.get("/login", (req, res) => {
+    let loginData = req.query
+    loginData.password  = utils.genPassword(String(loginData.password))
     userModel
         .find(req.query)
         .then((result: Array<object>) => {
@@ -26,8 +29,10 @@ router.get("/register", (req, res) => {
                 res.send(resObj);
             } else {
                 const saveDate: Date = new Date();
+                let registerData = req.query
+                registerData.password  = utils.genPassword(String(registerData.password))
                 const saveModel = new userModel(
-                    Object.assign(req.query, {ctime: saveDate})
+                    Object.assign(registerData, {ctime: saveDate})
                 );
                 saveModel.save().then((result: object) => {
                     res.send(result);
