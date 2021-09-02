@@ -36,7 +36,7 @@ app.use('/exerciseRecord',exerciseRecord)
 //token失效返回信息
 app.use(function(err:any,req:any,res:any,next:any){
     if(err.status==401){
-        return res.status(401).send('string')
+        return res.json({token:false,message:'token失效'})
         //可以设置返回json 形式  res.json({message:'token失效'})
     }
 })
