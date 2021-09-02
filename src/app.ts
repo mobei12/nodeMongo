@@ -5,17 +5,22 @@ const bodyParser = require("body-parser");
 const expressJwt=require('express-jwt')
 import utils from "./tools/utils";
 app.use(bodyParser.json()); //解析json类型的请求体
-/*数据库操作的模块start*/
+/*引入数据库操作的模块start*/
 const user = require('./user/user')
 const exerciseRecord = require('./exerciseList/exerciseRecord')
 /*数据库操作的模块end*/
+app.use(expressJwt({
+    secret:'mb_own_token',
+    algorithms:['HS256']
+}).unless({
+    path:['/user/login','/user/register']  //不需要验证的接口名称
+}))
 app.use((req,res,next)=>{
     const token =  req.headers['authorization'];
     if(token == undefined){
          next();
     }else{
         utils.getToken(token).then((data)=> {
-            req.body = data;
              next();
         }).catch(()=>{
             console.log(123)
@@ -23,13 +28,6 @@ app.use((req,res,next)=>{
         })
     }
 })
-//验证token是否过期并规定那些路由不需要验证
-app.use(expressJwt({
-    secret:'mb_own_token',
-    algorithms:['HS256']
-}).unless({
-    path:['/user/login','/user/register']  //不需要验证的接口名称
-}))
 
 //挂载用户操作相关模块
 app.use('/user',user)
@@ -38,7 +36,7 @@ app.use('/exerciseRecord',exerciseRecord)
 //token失效返回信息
 app.use(function(err:any,req:any,res:any,next:any){
     if(err.status==401){
-        return res.status(401).send('token失效')
+        return res.status(401).send('string')
         //可以设置返回json 形式  res.json({message:'token失效'})
     }
 })

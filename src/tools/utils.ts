@@ -1,5 +1,6 @@
 /*node自带加密模块*/
 import crypto = require("crypto");
+
 const jwt = require("jsonwebtoken")
 const jwtSecret: string = 'mb_own_token';  //token签名
 const SECRET_KEY: string = 'MOB_!@#' // 自定的密匙，但需要保存好
@@ -20,21 +21,23 @@ export default class Utils {
         return new Promise(resolve => {
             //expires 设置token过期的时间
             //{ user_name: user_name, user_id: user_id } 传入需要解析的值（ 一般为用户名，用户id 等）
-            const token: string = jwt.sign({user_name: username, user_id: user_id}, jwtSecret, {expiresIn: '24h'});
+            const token: string = 'Bearer ' + jwt.sign({
+                user_name: username,
+                user_id: user_id
+            }, jwtSecret, {expiresIn: '24h'});
             resolve(token)
         })
     }
-    static getToken =(token:string):Promise<object>=>{
-        return new Promise((resolve,reject)=>{
+    static getToken = (token: string): Promise<object> => {
+        return new Promise((resolve, reject) => {
             if (!token) {
                 console.log('token是空的')
                 reject({
                     error: 'token 是空的'
                 })
-            }
-            else {
+            } else {
                 //第二种  改版后的
-                const info = jwt.verify(token, jwtSecret);
+                const info = jwt.verify(token.split(' ')[1], jwtSecret);
                 resolve(info);  //解析返回的值（sign 传入的值）
             }
         })

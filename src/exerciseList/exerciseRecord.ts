@@ -10,10 +10,10 @@ router.use((req, res, next) => {
     next();
 });
 /*根据用户id，查询运动信息*/
-router.post("/find", (req, res) => {
-    let data = {... req.body}
+router.get("/find", (Request:any, res) => {
+    const user: { user_id?: string; user_name?: string }= Request.user
     exerciseRecordModel
-        .find(data)
+        .find({user_id:user.user_id})
         .then((result: Array<object>) => {
             res.send(result);
         })
