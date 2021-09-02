@@ -1,8 +1,6 @@
 "use strict";
 import ex = require("express");
-
 let router = ex.Router();
-
 const userModel = require("./userModel");
 import utils from "../tools/utils";
 
