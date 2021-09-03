@@ -22,7 +22,7 @@ app.use((req:Request,res:Response,next:NextFunction)=>{
     if(token == undefined){
          next();
     }else{
-        utils.getToken(token).then((data)=> {
+        utils.getToken(token).then(()=> {
              next();
         }).catch(()=>{
             console.log(123)
@@ -36,10 +36,12 @@ app.use('/user',user)
 //挂载运动相关模块
 app.use('/exerciseRecord',exerciseRecord)
 //token失效返回信息
-app.use(function(err:HttpException,req:Request,res:Response,next:NextFunction){
+app.use(function(err:HttpException,req:Request,res:Response){
     if(err.status==401){
         return res.json({token:false,message:'token失效'})
         //可以设置返回json 形式  res.json({message:'token失效'})
+    }else {
+        return  res.send(err.stack)
     }
 })
 app.listen(process.env.PORT || 8000, function () {

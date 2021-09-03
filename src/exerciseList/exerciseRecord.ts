@@ -1,6 +1,6 @@
 "use strict";
 import ex = require("express");
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 const exerciseRecordModel = require("./exerciseRecordModel");
 /*扩展Express的Request参数*/
 declare global {
