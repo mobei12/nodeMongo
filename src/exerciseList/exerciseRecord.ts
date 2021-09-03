@@ -1,5 +1,6 @@
 "use strict";
 import ex = require("express");
+import { NextFunction, Request, Response } from 'express';
 const exerciseRecordModel = require("./exerciseRecordModel");
 /*扩展Express的Request参数*/
 declare global {
@@ -19,7 +20,7 @@ router.use((req, res, next) => {
     next();
 });
 /*根据用户id，查询运动信息*/
-router.get("/find", (req, res) => {
+router.get("/find", (req:Request,res:Response) => {
     const {user_id}= req.user
     exerciseRecordModel
         .find({user_id:user_id})
@@ -31,7 +32,7 @@ router.get("/find", (req, res) => {
         });
 });
 /*存储运动记录*/
-router.get("/saveRecord", (req, res) => {
+router.get("/saveRecord", (req:Request,res:Response) => {
     const saveDate: Date = new Date();
     const saveModel = new exerciseRecordModel(
         Object.assign(req.query, {ctime: saveDate})

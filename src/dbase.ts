@@ -1,6 +1,6 @@
 import mongoose = require("mongoose");
 
-const db_url = "mongodb://127.0.0.1:27017/?authSource=admin";
+const db_url = "mongodb://106.53.115.30:27017/?authSource=admin";
 mongoose
 	.connect(db_url, {
 		user: "root",
