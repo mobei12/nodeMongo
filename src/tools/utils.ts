@@ -1,5 +1,5 @@
 /*node自带加密模块*/
-import crypto = require("crypto");
+import crypto  from 'crypto';
 
 const jwt = require("jsonwebtoken")
 const jwtSecret: string = 'mb_own_token';  //token签名

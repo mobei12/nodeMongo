@@ -1,5 +1,5 @@
 "use strict";
-import ex = require("express");
+import * as express from 'express';
 import { Request, Response } from 'express';
 const exerciseRecordModel = require("./exerciseRecordModel");
 /*扩展Express的Request参数*/
@@ -13,7 +13,7 @@ declare global {
         }
     }
 }
-let router = ex.Router();
+let router = express.Router();
 
 router.use((req, res, next) => {
     console.log("请求的时间", Date.now());

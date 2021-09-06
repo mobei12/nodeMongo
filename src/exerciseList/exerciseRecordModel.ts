@@ -1,5 +1,5 @@
 const mongoose = require("../dbase");
-import exerciseRecord = require("./exerciseRecordSchema");
+import {exerciseRecord} from './exerciseRecordSchema';
 
 let exerciseRecordModel: object = mongoose.model(
 	"ExerciseRecord",

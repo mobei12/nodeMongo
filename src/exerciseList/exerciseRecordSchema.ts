@@ -1,6 +1,6 @@
-import mongoose = require("mongoose");
+import mongoose from 'mongoose';
 
-const userSchema = new mongoose.Schema({
+const exerciseRecord = new mongoose.Schema({
 	user_id: String, //用户id
 	duration: Number, //运动用时,秒
 	number_of_times: Number, //运动分的次数
@@ -9,4 +9,4 @@ const userSchema = new mongoose.Schema({
     exercise_type: String, //运动类型，目前只有jumpRope(跳绳)
 	ctime: Date
 });
-module.exports = userSchema;
+export {exerciseRecord}
