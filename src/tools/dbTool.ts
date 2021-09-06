@@ -1,7 +1,7 @@
 const userModel = require("./user/userModel");
 import { userModelInstance } from "./interfaceType";
 export default class dbTools {
-	static userLogin(loginData: userModelInstance): Promise<Array<string>> {
+	 userLogin(loginData: userModelInstance): Promise<Array<string>> {
 		return userModel
 			.find(loginData)
 			.then((res: Array<object>) => {
