@@ -1,5 +1,5 @@
 "use strict";
-import express = require("express");
+import express from 'express';
 import {NextFunction, Request, Response} from 'express';
 const app: express.Application = express();
 const bodyParser = require("body-parser");

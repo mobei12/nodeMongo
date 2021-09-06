@@ -34,8 +34,9 @@ router.get("/find", (req:Request,res:Response) => {
 /*存储运动记录*/
 router.get("/saveRecord", (req:Request,res:Response) => {
     const saveDate: Date = new Date();
+	const {user_id}= req.user
     const saveModel = new exerciseRecordModel(
-        Object.assign(req.query, {ctime: saveDate})
+        Object.assign(req.query, {ctime: saveDate,user_id:user_id})
     );
     saveModel.save().then((result: object) => {
         res.send(result);

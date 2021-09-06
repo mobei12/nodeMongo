@@ -1,4 +1,4 @@
-import mongoose = require("mongoose");
+import mongoose from 'mongoose';
 
 const db_url = "mongodb://106.53.115.30:27017/?authSource=admin";
 mongoose
@@ -7,7 +7,7 @@ mongoose
 		pass: "123456"
 	})
 	.then(() => console.log("数据库连接成功"))
-	.catch((err) => console.log("数据库连接失败",err));
+	.catch((err:object) => console.log("数据库连接失败",err));
 
 /**
  * 连接断开
