@@ -3,7 +3,7 @@ import {Request, Response, NextFunction} from 'express';
 
 let router = express.Router();
 const userModel = require("./userModel");
-import utils from "../tools/utils";
+import {genPassword, setToken} from "../tools/utils";
 
 interface userModelInstance {
 	username: string;
@@ -18,13 +18,13 @@ router.use((req: Request, res: Response, next: NextFunction) => {
 /*用户登录接口，传人用户名和密码*/
 router.post("/login", (req: Request, res: Response,) => {
 	let loginData = req.body
-	loginData.password = utils.genPassword(String(loginData.password))
+	loginData.password = genPassword(String(loginData.password))
 	userModel
 		.find(loginData)
 		.then((result: Array<userModelInstance>) => {
 			if (result.length > 0) {
 				let userOBJ: userModelInstance = Object.create(result[0]);
-				utils.setToken(userOBJ.username, userOBJ._id).then(token => {
+				setToken(userOBJ.username, userOBJ._id).then(token => {
 					res.send({
 						code: 200,
 						user: {username: userOBJ.username, _id: userOBJ._id},
@@ -55,7 +55,7 @@ router.get("/register", (req: Request, res: Response,) => {
 			} else {
 				const saveDate: Date = new Date();
 				let registerData = req.query
-				registerData.password = utils.genPassword(String(registerData.password))
+				registerData.password = genPassword(String(registerData.password))
 				const saveModel = new userModel(
 					Object.assign(registerData, {ctime: saveDate})
 				);

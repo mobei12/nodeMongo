@@ -4,7 +4,7 @@ import {NextFunction, Request, Response} from 'express';
 const app: express.Application = express();
 const bodyParser = require("body-parser");
 const expressJwt = require('express-jwt')
-import utils from "./tools/utils";
+import {getToken} from "./tools/utils";
 import HttpException from './tools/HttpException';
 
 app.use(bodyParser.json()); //解析json类型的请求体
@@ -23,7 +23,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 	if (token == undefined) {
 		next();
 	} else {
-		utils.getToken(token).then(() => {
+		getToken(token).then(() => {
 			next();
 		}).catch(() => {
 			console.log(123)
