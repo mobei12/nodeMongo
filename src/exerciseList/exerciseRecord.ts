@@ -1,6 +1,5 @@
 import * as express from "express";
 import {Request, Response, NextFunction} from "express";
-
 const exerciseRecordModel = require("./exerciseRecordModel");
 /*扩展Express的Request参数*/
 declare global {
@@ -12,6 +11,12 @@ declare global {
 			};
 		}
 	}
+}
+interface ExerciseRecord {
+	_id?: string;
+	key?: string;
+	ctime?: Date;
+	[key: string]: any;
 }
 let router = express.Router();
 
@@ -32,17 +37,28 @@ router.get("/find", (req: Request, res: Response) => {
 		});
 });
 /*查询所有运动信息*/
-router.get("/findAll", (req: Request, res: Response) => {
+router.get("/findAll", (req: Request, res: Response, next) => {
 	const filter = req.query;
-	console.log(filter);
 	exerciseRecordModel
-		.find(filter)
-		.then((result: Array<{_id: string; key: string}>) => {
-			let newRe: {_id: string; key: string}[] = [];
-			result.forEach((re: {_id: string; key: string}) => {
-				newRe.push(Object.assign(re, {keu: re._id}));
-			});
-			res.send(newRe);
+		.aggregate([
+			{
+				$addFields: {
+					userId: {$convert: {input: "$user_id", to: "objectId"}},
+					key: "$_id",
+				},
+			},
+			{
+				$lookup: {
+					from: "user",
+					localField: "userId",
+					foreignField: "_id",
+					as: "users",
+				},
+			},
+			{$match: filter},
+		])
+		.then((result: Array<ExerciseRecord>) => {
+			res.send(result);
 		})
 		.catch((err: object) => {
 			console.error(err);

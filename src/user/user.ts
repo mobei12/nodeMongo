@@ -1,5 +1,5 @@
-import * as express from 'express';
-import {Request, Response, NextFunction} from 'express';
+import * as express from "express";
+import {Request, Response, NextFunction} from "express";
 
 let router = express.Router();
 const userModel = require("./userModel");
@@ -16,9 +16,9 @@ router.use((req: Request, res: Response, next: NextFunction) => {
 	next();
 });
 /*用户登录接口，传人用户名和密码*/
-router.post("/login", (req: Request, res: Response,) => {
-	let loginData = req.body
-	loginData.password = genPassword(String(loginData.password))
+router.post("/login", (req: Request, res: Response) => {
+	let loginData = req.body;
+	loginData.password = genPassword(String(loginData.password));
 	userModel
 		.find(loginData)
 		.then((result: Array<userModelInstance>) => {
@@ -28,15 +28,15 @@ router.post("/login", (req: Request, res: Response,) => {
 					res.send({
 						code: 200,
 						user: {username: userOBJ.username, _id: userOBJ._id},
-						message: '登录成功',
-						token: token
-					})
-				})
+						message: "登录成功",
+						token: token,
+					});
+				});
 			} else {
 				res.send({
 					code: 200,
-					message: '登录失败，瓜怂',
-				})
+					message: "登录失败，瓜怂",
+				});
 			}
 		})
 		.catch((err: object) => {
@@ -44,7 +44,7 @@ router.post("/login", (req: Request, res: Response,) => {
 		});
 });
 /*用户注册接口，传入用户名和密码*/
-router.get("/register", (req: Request, res: Response,) => {
+router.get("/register", (req: Request, res: Response) => {
 	let resObj = {desc: "注册成功"};
 	userModel
 		.find({username: req.query.username})
@@ -54,11 +54,9 @@ router.get("/register", (req: Request, res: Response,) => {
 				res.send(resObj);
 			} else {
 				const saveDate: Date = new Date();
-				let registerData = req.query
-				registerData.password = genPassword(String(registerData.password))
-				const saveModel = new userModel(
-					Object.assign(registerData, {ctime: saveDate})
-				);
+				let registerData = req.query;
+				registerData.password = genPassword(String(registerData.password));
+				const saveModel = new userModel(Object.assign(registerData, {ctime: saveDate}));
 				saveModel.save().then((result: object) => {
 					res.send(result);
 				});
@@ -69,12 +67,22 @@ router.get("/register", (req: Request, res: Response,) => {
 		});
 });
 /*查询用户列表,可以传入对象参数做筛选*/
-router.get('/getUserList', (req: Request, res: Response,) => {
-	const filter = req.query
-	userModel.find(filter).then((result: Array<userModelInstance>) => {
-		res.send(result)
-	}).catch((err: object) => {
-		console.log(err)
-	})
-})
+router.get("/getUserList", (req: Request, res: Response) => {
+	const filter = req.query;
+	userModel
+		.aggregate([
+			{
+				$addFields: {
+					key: "$_id",
+				},
+			},
+			{$match: filter},
+		])
+		.then((result: Array<userModelInstance>) => {
+			res.send(result);
+		})
+		.catch((err: object) => {
+			console.log(err);
+		});
+});
 module.exports = router;
