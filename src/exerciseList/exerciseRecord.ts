@@ -26,7 +26,10 @@ router.use((req: Request, res: Response, next: NextFunction) => {
 });
 /*根据用户id，查询运动信息*/
 router.get("/find", (req: Request, res: Response) => {
-	const {user_id} = req.user;
+	let {user_id} = req.user;
+	if (req.query.user_id) {
+		user_id = req.query.user_id as string;
+	}
 	exerciseRecordModel
 		.find({user_id: user_id})
 		.then((result: Array<object>) => {
