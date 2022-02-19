@@ -10,6 +10,7 @@ import HttpException from "./tools/HttpException";
 app.use(bodyParser.json()); //解析json类型的请求体
 /*引入数据库操作的模块start*/
 const user = require("./user/user");
+const rss = require("./rssServer/rss");
 const exerciseRecord = require("./exerciseList/exerciseRecord");
 /*数据库操作的模块end*/
 app.use(
@@ -40,6 +41,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 app.use(["/api/user", "/user"], user);
 //挂载运动相关模块
 app.use(["/api/exerciseRecord", "/exerciseRecord"], exerciseRecord);
+app.use(["/api/rss", "/rss"], rss);
 //token失效返回信息
 app.use(function (err: HttpException, req: Request, res: Response) {
 	if (err.status == 401) {

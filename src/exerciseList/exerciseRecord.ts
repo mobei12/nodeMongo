@@ -40,7 +40,7 @@ router.get("/find", (req: Request, res: Response) => {
 		});
 });
 /*查询所有运动信息*/
-router.get("/findAll", (req: Request, res: Response, next) => {
+router.get("/findAll", (req: Request, res: Response) => {
 	const filter = req.query;
 	exerciseRecordModel
 		.aggregate([
