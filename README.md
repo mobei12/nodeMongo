@@ -1,12 +1,13 @@
 # nodeMongo
+
 项目启动前的准备：
 
-- 需要配置ts环境
-- 其次npm i 装依赖就行
-- 发布打包要先用tsc命令编译，把build文件夹的发布出去就行
+-   需要配置 ts 环境
+-   其次 npm i 装依赖就行
+-   发布打包要先用 tsc 命令编译，把 build 文件夹的发布出去就行
 
-~~~~~~~~~~~~
-给 react 项目的后台服务,   
+```
+给 react 项目的后台服务,
 .
 ├── README.md //说明文档
 ├── package-lock.json
@@ -21,4 +22,4 @@
 ├── tsconfig.json//ts配置
 └── tslint.json//ts规范文件
 
-~~~~~~~~~~~~
+```
