@@ -1,11 +1,11 @@
 import * as express from "express";
 import {Request, Response, NextFunction} from "express";
 
-let router = express.Router();
+const router = express.Router();
 const userModel = require("./userModel");
 import {genPassword, setToken} from "../tools/utils";
 
-interface userModelInstance {
+type userModelInstance = {
 	username: string;
 	_id: string;
 	password?: string;

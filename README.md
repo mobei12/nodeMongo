@@ -4,7 +4,7 @@
 
 -   需要配置 ts 环境
 -   其次 npm i 装依赖就行
--   启动项目：npm run start
+-   启动项目：npm run dev
 -   发布项目：tsc
 -   build 文件夹的发布出去就行
 
