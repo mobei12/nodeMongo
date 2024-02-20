@@ -19,12 +19,17 @@ router.use((req: Request, res: Response, next: NextFunction) => {
 router.post("/login", (req: Request, res: Response) => {
 	let loginData = req.body;
 	loginData.password = genPassword(String(loginData.password));
-	console.log(loginData);
 	userFind(loginData).then((result: userModelInstance) => {
-		if (result) {
-			res.send({
-				code: 200,
-				message: "登录成功",
+	console.log(result);
+		if (result!==null) {
+			const {_id,username} = result
+			setToken(username, _id).then(token => {
+				res.send({
+					code: 200,
+					user: {username, _id},
+					message: "登录成功",
+					token: token,
+				});
 			});
 		} else {
 			res.send({
@@ -35,29 +40,6 @@ router.post("/login", (req: Request, res: Response) => {
 	}).catch((err: object) => {
 		console.error(err);
 	})
-	/* userModel
-		.find(loginData)
-		.then((result: Array<userModelInstance>) => {
-			if (result.length > 0) {
-				let userOBJ: userModelInstance = Object.create(result[0]);
-				setToken(userOBJ.username, userOBJ._id).then(token => {
-					res.send({
-						code: 200,
-						user: {username: userOBJ.username, _id: userOBJ._id},
-						message: "登录成功",
-						token: token,
-					});
-				});
-			} else {
-				res.send({
-					code: 200,
-					message: "登录失败，瓜怂",
-				});
-			}
-		})
-		.catch((err: object) => {
-			console.error(err);
-		}); */
 });
 /*用户注册接口，传入用户名和密码*/
 router.get("/register", (req: Request, res: Response) => {
