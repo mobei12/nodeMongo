@@ -22,4 +22,7 @@ class MongooseProvider {
         console.log('数据库连接断开')
     }
 }
-export default MongooseProvider
+const MongooseInstance = MongooseProvider.getInstance()
+export {
+    MongooseInstance,
+}

@@ -1,6 +1,6 @@
-import MongooseProvider from "../db";
+import { MongooseInstance } from "../db";
 import { exerciseRecord } from "./exerciseRecordSchema";
-const exerciseRecordModel = MongooseProvider.getInstance().getModel("ExerciseRecord", exerciseRecord);
+const exerciseRecordModel = MongooseInstance.getModel("ExerciseRecord", exerciseRecord);
 const findRecordsByUser = async (data: object) => {
 	const records = await exerciseRecordModel.find(data);
 	return records

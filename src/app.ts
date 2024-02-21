@@ -6,7 +6,7 @@ const bodyParser = require("body-parser");
 const expressJwt = require("express-jwt");
 import { getToken } from "./tools/utils";
 import HttpException from "./tools/HttpException";
-import MongooseProvider from "./db";
+import { MongooseInstance } from "./db";
 
 app.use(bodyParser.json()); //解析json类型的请求体
 /*引入数据库操作的模块start*/
@@ -57,11 +57,11 @@ app.listen(process.env.PORT || 8000, function () {
 	console.log("Listen port:8000...");
 });
 process.on("SIGTERM", () => {
-	MongooseProvider.getInstance().disconnect();
+	MongooseInstance.disconnect();
 })
 process.on("SIGINT", () => {
-	MongooseProvider.getInstance().disconnect();
+	MongooseInstance.disconnect();
 })
 process.on('exit', () => {
-    MongooseProvider.getInstance().disconnect();
-  });
+	MongooseInstance.disconnect();
+});

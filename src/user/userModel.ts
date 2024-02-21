@@ -1,6 +1,6 @@
-import MongooseProvider from "../db";
+import {MongooseInstance} from "../db";
 import { userSchema } from "./userSchema";
-const UserModel = MongooseProvider.getInstance().getModel("User", userSchema);
+const UserModel = MongooseInstance.getModel("User", userSchema);
 const createUser = async (data: object) => {
     const user = new UserModel(data);
     await user.save();
