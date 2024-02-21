@@ -4,7 +4,7 @@ import { Request, Response, NextFunction } from "express";
 const router = express.Router();
 
 import { genPassword, setToken } from "../tools/utils";
-import { createUser, userFind, closeConnection, userFindAll } from './userModel'
+import { createUser, userFind, userFindAll } from './userModel'
 
 type userModelInstance = {
 	username: string;
@@ -20,13 +20,12 @@ router.post("/login", (req: Request, res: Response) => {
 	let loginData = req.body;
 	loginData.password = genPassword(String(loginData.password));
 	userFind(loginData).then((result: userModelInstance) => {
-	console.log(result);
-		if (result!==null) {
-			const {_id,username} = result
+		if (result !== null) {
+			const { _id, username } = result
 			setToken(username, _id).then(token => {
 				res.send({
 					code: 200,
-					user: {username, _id},
+					user: { username, _id },
 					message: "登录成功",
 					token: token,
 				});
@@ -34,7 +33,7 @@ router.post("/login", (req: Request, res: Response) => {
 		} else {
 			res.send({
 				code: 200,
-				message: "登录失败，瓜怂",
+				message: "登录失败",
 			});
 		}
 	}).catch((err: object) => {
@@ -71,5 +70,5 @@ router.get("/getUserList", (req: Request, res: Response) => {
 		console.log(err);
 	})
 });
-module.exports = router;
+export default router
 

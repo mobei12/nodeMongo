@@ -40,4 +40,4 @@ router.get("/getFeedListByURL1", (req: any, res: Response) => {
 			console.log(err);
 		});
 });
-module.exports = router;
+export default router

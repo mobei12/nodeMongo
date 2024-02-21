@@ -10,9 +10,9 @@ import MongooseProvider from "./db";
 
 app.use(bodyParser.json()); //解析json类型的请求体
 /*引入数据库操作的模块start*/
-const user = require("./user/user");
-const rss = require("./rssServer/rss");
-//const exerciseRecord = require("./exerciseList/exerciseRecord");
+import user from "./user";
+import rss from "./rssServer";
+import exerciseRecord from "./exerciseList";
 /*数据库操作的模块end*/
 app.use(
 	expressJwt({
@@ -42,16 +42,14 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 //挂载用户操作相关模块
 app.use(["/api/user", "/user"], user);
 //挂载运动相关模块
-//app.use(["/api/exerciseRecord", "/exerciseRecord"], exerciseRecord);
+app.use(["/api/exerciseRecord", "/exerciseRecord"], exerciseRecord);
 app.use(["/api/rss", "/rss"], rss);
 //token失效返回信息
 app.use(function (err: HttpException, req: Request, res: Response) {
-
 	if (err.status == 401) {
 		return res.json({ token: false, message: "token失效" });
 		//可以设置返回json 形式  res.json({message:'token失效'})
 	} else {
-		console.log(res)
 		return res.send(err.stack);
 	}
 });

@@ -14,7 +14,5 @@ const userFindAll = async (data: object) => {
     const user = await UserModel.find(data);
     return user
 }
-const closeConnection = () => {
-    MongooseProvider.getInstance().disconnect()
-}
-export { createUser, userFind, closeConnection,userFindAll }
+
+export { createUser, userFind ,userFindAll }
