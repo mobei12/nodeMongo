@@ -1,14 +1,23 @@
 import express = require("express");
 import { NextFunction, Request, Response } from "express";
+import HttpException from "./tools/HttpException";
+import { MongooseInstance } from "./db";
+import { getToken } from "./tools/utils";
 
 const app: express.Application = express();
 const bodyParser = require("body-parser");
 const expressJwt = require("express-jwt");
-import { getToken } from "./tools/utils";
-import HttpException from "./tools/HttpException";
-import { MongooseInstance } from "./db";
-
 app.use(bodyParser.json()); //解析json类型的请求体
+app.all("*", function (req: Request, res: Response, next: NextFunction) {
+	res.header("Access-Control-Allow-Origin", "*");
+	res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+	res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+	/*
+	Access-Control-Allow-Origin：指定哪些域被允许访问资源。
+	Access-Control-Allow-Methods：指定允许的HTTP方法。
+	Access-Control-Allow-Headers：指定允许的HTTP头。*/
+	next();
+})
 /*引入数据库操作的模块start*/
 import user from "./user";
 import rss from "./rssServer";
@@ -19,7 +28,7 @@ app.use(
 		secret: "mb_own_token",
 		algorithms: ["HS256"],
 	}).unless({
-		path: ["/api/user/getUserList", "/api/user/login", "/api/user/register", "/api/rss"], //不需要验证的接口名称
+		path: ["/api/user/getUserList", "/api/user/login", "/api/user/register"], //不需要验证的接口名称
 	})
 );
 
