@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction } from "express";
 
 const router = express.Router();
-
+import {createAsyncRouter}  from"../tools/express";
 import { genPassword, setToken } from "../tools/utils";
 import { createUser, userFind, userFindAll } from './userModel'
 
