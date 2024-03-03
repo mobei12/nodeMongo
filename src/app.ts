@@ -28,7 +28,7 @@ app.use(
 		secret: "mb_own_token",
 		algorithms: ["HS256"],
 	}).unless({
-		path: ["/api/user/getUserList", "/api/user/login", "/api/user/register"], //不需要验证的接口名称
+		path: ["/api/user/login", "/api/user/register"], //不需要验证的接口名称
 	})
 );
 
