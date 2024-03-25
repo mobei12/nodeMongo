@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 
 import { createAsyncRouter, methods } from "../tools/express";
-import { genPassword, setToken } from "../tools/utils";
+import { genPassword, setToken,checkPermission } from "../tools/utils";
 import { createUser, userFind, userFindAll } from './userModel';
 
 type userModelInstance = {
@@ -49,25 +49,23 @@ router.useAsync(methods.post, '/register', async (req: Request, res: Response) =
 		} else {
 			const saveDate: Date = new Date();
 			const _password = genPassword(String(password));
-			const saveResult = await createUser(Object.assign({username,_password}, { ctime: saveDate }));
+			const saveResult = await createUser(Object.assign({username,_password}, { level:0,ctime: saveDate }));//默认等级为0。等级越高，权限越高
 			if(saveResult&&saveResult._id){
 				resObj.id = saveResult._id
 			}
 			res.send(resObj);
 		}
 	} catch (err) {
-		console.error(err);
 		res.status(500).send("Internal Server Error");
 	}
 })
 
 /*查询用户列表,可以传入对象参数做筛选*/
-router.useAsync(methods.get, '/getUserList', async (req: Request, res: Response) => {
+router.useAsync(methods.get, '/getUserList',checkPermission, async (req: Request, res: Response) => {
 	try {
 		const result: Array<userModelInstance> = await userFindAll(req.query);
 		res.send(result);
 	} catch (err) {
-		console.error(err);
 		res.status(500).send("Internal Server Error");
 	}
 })

@@ -1,6 +1,6 @@
 /*node自带加密模块*/
 import crypto from 'crypto';
-
+import { Request, Response, NextFunction } from 'express';
 const jwt = require("jsonwebtoken")
 const jwtSecret: string = 'mb_own_token';  //token签名
 const SECRET_KEY: string = 'MOB_!@#' // 自定的密匙，但需要保存好
@@ -52,8 +52,18 @@ const getToken = (token: string): Promise<object> => {
 		}
 	})
 }
+const checkPermission = (req: Request, res: Response, next: NextFunction) => {
+	const { level } = req.user;
+	if (!level || level < 2) {
+	  return res.status(401).send({
+		code: 401,
+		message: "权限不足",
+	  });
+	}
+	next();
+  };
 export {
-	genPassword, setToken, getToken
+	genPassword, setToken, getToken,checkPermission
 }
 
 

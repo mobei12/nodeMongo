@@ -8,6 +8,7 @@ declare global {
 			user: {
 				user_id?: string;
 				user_name?: string;
+				level?: number;
 			};
 		}
 	}
