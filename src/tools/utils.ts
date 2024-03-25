@@ -23,13 +23,15 @@ const genPassword = (password: string): string => {
 /**生成token
  * @param {string} user_name 用户名
  * @param {string} user_id 密码
+ * @param {number} level 用户等级
  * */
-const setToken = (user_name: string, user_id: string): Promise<String> => {
+const setToken = (user_name: string, user_id: string,level:number): Promise<String> => {
 	return new Promise(resolve => {
 		//expires 设置token过期的时间
-		//{ user_name: user_name, user_id: user_id } 传入需要解析的值（ 一般为用户名，用户id 等）
+		//{ user_name, user_id,level} 传入需要解析的值（ 一般为用户名，用户id 等）
 		const token: string = 'Bearer ' + jwt.sign({
 			user_name,
+			level,
 			user_id
 		}, jwtSecret, { expiresIn: '24h' });
 		resolve(token)

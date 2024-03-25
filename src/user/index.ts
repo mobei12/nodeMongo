@@ -7,6 +7,7 @@ import { createUser, userFind, userFindAll } from './userModel';
 type userModelInstance = {
 	username: string;
 	_id: string;
+	level: number;
 	password?: string;
 }
 const router = createAsyncRouter();
@@ -16,10 +17,10 @@ router.useAsync(methods.post, '/login', async (req: Request, res: Response) => {
 	try {
 		let loginData = req.body;
 		loginData.password = genPassword(String(loginData.password));
-		const result = await userFind(loginData);
+		const result:userModelInstance | null = await userFind(loginData);
 		if (result !== null) {
-			const { _id, username } = result
-			const token = await setToken(username, _id)
+			const { _id, username,level=2 } = result
+			const token = await setToken(username, _id,level)
 			res.send({
 				code: 200,
 				user: { username, _id },
