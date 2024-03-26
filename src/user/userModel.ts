@@ -1,12 +1,12 @@
 import {MongooseInstance} from "../db";
-import { userSchema } from "./userSchema";
+import { userSchema,IUser } from "./userSchema";
 const UserModel = MongooseInstance.getModel("User", userSchema);
-const createUser = async (data: object) => {
+const createUser = async (data: Omit<IUser, "lastLogin">) => {
     const user = new UserModel(data);
     await user.save();
     return user
 }
-const userFind = async (data: object) => {
+const userFind = async (data:  Pick<IUser, "username"|"password">) => {
     const user = await UserModel.findOne(data);
     return user
 }
