@@ -50,7 +50,7 @@ router.useAsync(methods.post, '/register', async (req: Request, res: Response) =
 		} else {
 			const saveDate: Date = new Date();
 			const _password = genPassword(String(password));
-			const saveResult = await createUser(Object.assign({username,_password}, { level:0,ctime: saveDate }));//默认等级为0。等级越高，权限越高
+			const saveResult = await createUser(Object.assign({username,password:_password}, { level:0,ctime: saveDate }));//默认等级为0。等级越高，权限越高
 			if(saveResult&&saveResult._id){
 				resObj.id = saveResult._id
 			}
