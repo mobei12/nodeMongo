@@ -19,9 +19,9 @@ app.all("*", function (req: Request, res: Response, next: NextFunction) {
 	next();
 })
 /*引入数据库操作的模块start*/
-import user from "./user";
-import rss from "./rssServer";
-import exerciseRecord from "./exerciseList";
+import user from "./UserServer";
+import rss from "./RssServer";
+import exerciseRecord from "./ExerciseServer";
 /*数据库操作的模块end*/
 app.use(
 	expressJwt({
