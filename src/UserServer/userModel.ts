@@ -6,7 +6,7 @@ const createUser = async (data: Omit<IUser, "lastLogin">) => {
     await user.save();
     return user
 }
-const userFind = async (data:  Pick<IUser, "username"|"password">) => {
+const userFind = async (data:  Pick<IUser, "username">) => {
     const user = await UserModel.findOne(data);
     return user
 }

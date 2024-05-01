@@ -44,7 +44,7 @@ router.useAsync(methods.post, '/register', async (req: Request, res: Response) =
 		let {username, password} = req.body;
 		const resObj = { code: 200, message: "注册成功",id:"" };
 		const _password = genPassword(String(password));
-		const result: userModelInstance | null = await userFind({ username, password: _password });
+		const result: userModelInstance | null = await userFind({ username});
 		if (result) {
 			resObj.message = "用户名已存在";
 			res.send(resObj);
